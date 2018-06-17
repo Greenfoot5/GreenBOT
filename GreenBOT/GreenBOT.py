@@ -53,7 +53,7 @@ initial_extensions = ['cogs.help',
                       'cogs.nwxp',
                       'cogs.mindustry']
 
-bot = commands.Bot(command_prefix=get_prefix, description="A bot for Greenfoot5's Cody Cavern", self_bot=False)
+bot = commands.Bot(command_prefix=get_prefix, description="A bot for Greenfoot5's Cody Cavern.", self_bot=False)
 bot.remove_command('help')
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
