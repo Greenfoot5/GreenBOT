@@ -78,4 +78,4 @@ async def on_ready():
                                                         type=0))
     print(f'Successfully logged in and booted...!\n')
 
-bot.run(pickle.load(open('Token.data','rb')), bot=True, reconnect=True)
+bot.run(pickle.load(open('token.data','rb')), bot=True, reconnect=True)

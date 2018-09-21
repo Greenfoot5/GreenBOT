@@ -233,7 +233,7 @@ class NWXPCog:
             await ctx.send("That user don't currently have any XP yet.")
             
     @g5b.command(name='rank')
-    @commands.cooldown(120,seconds,Buckettype.user)
+    @commands.cooldown(1,120.0,BucketType.user)
     async def CRank(self, ctx, placement:int=None):
         if ctx.guild == None:
             return
