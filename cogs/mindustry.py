@@ -1,7 +1,6 @@
-import discord
+dimport discord
 from discord.ext import commands
 import asyncio
-import websockets
 import socket #used to send UDP packets
 import random
 import colorsys
@@ -35,7 +34,7 @@ def ping(host:str, port:int):
     sock.settimeout(4) #request timedout
     ms = 'ping failed'
     try:
-        sent = sock.sendto(b'\xFE\x01',(socket.gethostbyname(host), port)) #send [-2,1] (bytes)
+        sent = sock.sendto(b'\xFE\x01',(host, port)) #send [-2,1] (bytes)
         start = time.time()
         data, server = sock.recvfrom(128)
         ms = '%.d ms' %((time.time()-start)*1000)        
@@ -50,7 +49,7 @@ def ping(host:str, port:int):
 class MindustryCog:
     def __init__(self, bot):
         self.bot = bot
-        self.servers = ["mindustry.oa.to","games.prwh.de"]
+        self.servers = ["mindustry.kr","mindustry.indielm.com"]
 
     @commands.group(name='mindustry',aliases=["m"])
     async def mindustry(self, ctx):
@@ -61,18 +60,16 @@ class MindustryCog:
     #LengthOfHostName HostName, LengthOfMapName MapName, PlayerAmount, Wave, Version
     @mindustry.command(name='ping')
     async def Mping(self,ctx,server:str=None, port:str='6567'):
+        print(server)
         if server is None:
             await ctx.send("Please specify a server.")
             return
         try:
             if ':' in server:
                 ip, port = server.split(':')
+            else:
+                ip = server
             response = ping(ip, int(port))
-            
-            '''async with websockets.connect(f'ws://{server}:6568') as websocket:
-                await websocket.send('ping')
-                reply = await websocket.recv()
-                dreply = base64.b64decode(reply)'''
             randomColour = [int(x*255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1)]
             randomColour = discord.Colour.from_rgb(*randomColour)
             embed = discord.Embed(title=server,
@@ -83,43 +80,12 @@ class MindustryCog:
                 embed.add_field(name=key,
                                 value=response[key])
                              
-            '''if server == "mindustry.us.to":
-                embed.add_field(name='Host',
-                                value="Anuke")
-            elif server == "mindustry.oa.to":
-                embed.add_field(name='Host',
-                                value="Gureumi")
-            elif server == "mindustry.pastorhudson.com":
-                embed.add_field(name='Host',
-                                value="geekthing")
-            elif server == "games.prwh.de":
-                embed.add_field(name='Host',
-                                value="Dragonisser")
-            else:
-                embed.add_field(name='Host',
-                                value=str(dreply[1:(dreply[0]+1)])[2:(dreply[0]+2)])
-            embed.add_field(name='Map',
-                            value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}")
-            embed.add_field(name='Players',
-                            value=dreply[dreply[0]+5+dreply[dreply[0]+1]])
-            embed.add_field(name='Wave',
-                            value=dreply[dreply[0]+9+dreply[dreply[0]+1]])'''
             embed.set_footer(text=ctx.guild.name,
                              icon_url=ctx.guild.icon_url_as(format='png'))
             await ctx.send(embed=embed)
             print(server, response)
-        '''except OSError:
-        embed = discord.Embed(title=server,
-                              description="Invalid server.",
-                              colour=0x990000)
-        embed.set_author(name=self.bot.user.display_name,
-                         icon_url=self.bot.user.avatar_url_as(format='png'))
-        embed.set_footer(text=ctx.guild.name,
-                         icon_url=ctx.guild.icon_url_as(format='png'))
-        await ctx.send(embed=embed,content="Error")
-        '''   
-        except:
-            pass
+        except Exception as e:
+            print(e)
         
     @mindustry.command(name='servers')
     async def MServers(self,ctx):
@@ -128,7 +94,7 @@ class MindustryCog:
         embed = discord.Embed(title="Servers:",
                               colour=randomColour)
         embed.set_author(name=self.bot.user.display_name,
-                        icon_url=self.bot.user.avatar_url_as(format='png'))
+                         icon_url=self.bot.user.avatar_url_as(format='png'))
         embed.add_field(name="_*IP*_",
                         value="*Map*, *Players*, *Wave*")
         for server in self.servers:
@@ -140,25 +106,11 @@ class MindustryCog:
                 response = ping(ip, int(port))
                 if len(response) != 1:
                     embed.add_field(name=server,
-                                    value=f"{response['map']},{response['players']},{response['wave']}")
+                                    value=f"{response['mapName']},{response['players']},{response['wave']}")
                 else:
                     embed.add_field(name=server,
                                     value="**OFFLINE**")
-                                    
-                                    
-                     
-                   
-            '''
-            async with websockets.connect(f'ws://{server}:6568') as websocket:
-                await websocket.send('ping')
-                reply = await websocket.recv()
-                dreply = base64.b64decode(reply)
-                embed.add_field(name=server,
-                            value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}, {dreply[dreply[0]+5+dreply[dreply[0]+1]]} players, Wave {dreply[dreply[0]+5+dreply[dreply[0]+1]+4]}")
 
-            except OSError:
-            embed.add_field(name=server,
-                            value="**OFFLINE**")'''
             except Exception as e:
                 print(e)
         embed.set_footer(text=ctx.guild.name,
@@ -167,6 +119,7 @@ class MindustryCog:
 
     @mindustry.command(name='certify',aliases=['verify'])
     async def MCertify(self,ctx,ip=None):
+        await ctx.send('not updated yet might cause a crash')
         if ip == None:
             await ctx.send("Please input an ip.")
             return
