@@ -1,4 +1,4 @@
-dimport discord
+import discord
 from discord.ext import commands
 import asyncio
 import socket #used to send UDP packets
