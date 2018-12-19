@@ -83,40 +83,40 @@ class MindustryCog:
                 embed.add_field(name=key,
                                 value=response[key])
                              
-             '''if server == "mindustry.us.to":
-                    embed.add_field(name='Host',
-                                    value="Anuke")
-                elif server == "mindustry.oa.to":
-                    embed.add_field(name='Host',
-                                    value="Gureumi")
-                elif server == "mindustry.pastorhudson.com":
-                    embed.add_field(name='Host',
-                                    value="geekthing")
-                elif server == "games.prwh.de":
-                    embed.add_field(name='Host',
-                                    value="Dragonisser")
-                else:
-                    embed.add_field(name='Host',
-                                    value=str(dreply[1:(dreply[0]+1)])[2:(dreply[0]+2)])
-                embed.add_field(name='Map',
-                                value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}")
-                embed.add_field(name='Players',
-                                value=dreply[dreply[0]+5+dreply[dreply[0]+1]])
-                embed.add_field(name='Wave',
-                                value=dreply[dreply[0]+9+dreply[dreply[0]+1]])'''
+            '''if server == "mindustry.us.to":
+                embed.add_field(name='Host',
+                                value="Anuke")
+            elif server == "mindustry.oa.to":
+                embed.add_field(name='Host',
+                                value="Gureumi")
+            elif server == "mindustry.pastorhudson.com":
+                embed.add_field(name='Host',
+                                value="geekthing")
+            elif server == "games.prwh.de":
+                embed.add_field(name='Host',
+                                value="Dragonisser")
+            else:
+                embed.add_field(name='Host',
+                                value=str(dreply[1:(dreply[0]+1)])[2:(dreply[0]+2)])
+            embed.add_field(name='Map',
+                            value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}")
+            embed.add_field(name='Players',
+                            value=dreply[dreply[0]+5+dreply[dreply[0]+1]])
+            embed.add_field(name='Wave',
+                            value=dreply[dreply[0]+9+dreply[dreply[0]+1]])'''
             embed.set_footer(text=ctx.guild.name,
                              icon_url=ctx.guild.icon_url_as(format='png'))
             await ctx.send(embed=embed)
             print(server, response)
         '''except OSError:
-            embed = discord.Embed(title=server,
-                                  description="Invalid server.",
-                                  colour=0x990000)
-            embed.set_author(name=self.bot.user.display_name,
-                             icon_url=self.bot.user.avatar_url_as(format='png'))
-            embed.set_footer(text=ctx.guild.name,
-                             icon_url=ctx.guild.icon_url_as(format='png'))
-            await ctx.send(embed=embed,content="Error")
+        embed = discord.Embed(title=server,
+                              description="Invalid server.",
+                              colour=0x990000)
+        embed.set_author(name=self.bot.user.display_name,
+                         icon_url=self.bot.user.avatar_url_as(format='png'))
+        embed.set_footer(text=ctx.guild.name,
+                         icon_url=ctx.guild.icon_url_as(format='png'))
+        await ctx.send(embed=embed,content="Error")
         '''   
         except:
             pass
@@ -148,17 +148,17 @@ class MindustryCog:
                                     
                      
                    
-                '''
-                async with websockets.connect(f'ws://{server}:6568') as websocket:
-                    await websocket.send('ping')
-                    reply = await websocket.recv()
-                    dreply = base64.b64decode(reply)
-                    embed.add_field(name=server,
-                                value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}, {dreply[dreply[0]+5+dreply[dreply[0]+1]]} players, Wave {dreply[dreply[0]+5+dreply[dreply[0]+1]+4]}")
-                
-            except OSError:
+            '''
+            async with websockets.connect(f'ws://{server}:6568') as websocket:
+                await websocket.send('ping')
+                reply = await websocket.recv()
+                dreply = base64.b64decode(reply)
                 embed.add_field(name=server,
-                                value="**OFFLINE**")'''
+                            value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}, {dreply[dreply[0]+5+dreply[dreply[0]+1]]} players, Wave {dreply[dreply[0]+5+dreply[dreply[0]+1]+4]}")
+
+            except OSError:
+            embed.add_field(name=server,
+                            value="**OFFLINE**")'''
             except Exception as e:
                 print(e)
         embed.set_footer(text=ctx.guild.name,
