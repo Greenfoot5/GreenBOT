@@ -120,6 +120,7 @@ class MindustryCog:
         '''   
         except:
             pass
+        
     @mindustry.command(name='servers')
     async def MServers(self,ctx):
         randomColour = [int(x*255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1)]
@@ -132,15 +133,34 @@ class MindustryCog:
                         value="*Map*, *Players*, *Wave*")
         for server in self.servers:
             try:
+                if ':' in server:
+                    ip, port = server.split(':')
+                else:
+                    ip, port = server, '6567'
+                response = ping(ip, int(port))
+                if len(response) != 1:
+                    embed.add_field(name=server,
+                                    value=f"{response['map']},{response['players']},{response['wave']}")
+                else:
+                    embed.add_field(name=server,
+                                    value="**OFFLINE**")
+                                    
+                                    
+                     
+                   
+                '''
                 async with websockets.connect(f'ws://{server}:6568') as websocket:
                     await websocket.send('ping')
                     reply = await websocket.recv()
                     dreply = base64.b64decode(reply)
                     embed.add_field(name=server,
                                 value=f"'{str(dreply[(dreply[0]+2):(dreply[0]+2+dreply[dreply[0]+1])])[2:(dreply[0]+dreply[dreply[0]+1])]}, {dreply[dreply[0]+5+dreply[dreply[0]+1]]} players, Wave {dreply[dreply[0]+5+dreply[dreply[0]+1]+4]}")
+                
             except OSError:
                 embed.add_field(name=server,
-                                value="**OFFLINE**")
+                                value="**OFFLINE**")'''
+            except Exception as e:
+                print(e)
         embed.set_footer(text=ctx.guild.name,
                         icon_url=ctx.guild.icon_url_as(format='png'))
         await ctx.send(embed=embed)
