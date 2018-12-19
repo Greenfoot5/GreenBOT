@@ -2,11 +2,14 @@ import discord
 from discord.ext import commands
 import asyncio
 import websockets
-import base64
+import socket #used to send UDP packets
 import random
 import colorsys
 import time
 import pickle
+
+#functions needed to decode the message
+
 
 class MindustryCog:
     def __init__(self, bot):
