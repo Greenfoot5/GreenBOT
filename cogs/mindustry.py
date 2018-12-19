@@ -9,6 +9,42 @@ import time
 import pickle
 
 #functions needed to decode the message
+def popString(stack):
+    length =  1+int.from_bytes(stack[:1],byteorder='big')
+    string = stack[1:length].decode("utf-8")
+    return stack[length:], string
+
+def popInt(stack):
+    integer = int.from_bytes(stack[:4],byteorder='big')
+    return stack[4:],integer
+
+def parseResponse(response):
+    response, _ = popString(response) #msg would be server
+    response, mapName  = popString(response)
+    response, players  = popInt(response)
+    response, wave     = popInt(response)
+    response, version  = popInt(response)
+    response =  {'mapName': mapName,
+                'players': players,
+                'wave': wave,
+                'version': version}
+    return response
+
+def ping(host:str, port:int):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.settimeout(4) #request timedout
+    ms = 'ping failed'
+    try:
+        sent = sock.sendto(b'\xFE\x01',(host, port))
+        start = time.time()
+        data, server = sock.recvfrom(128)
+        ms = '%.d ms' %((time.time()-start)*1000)        
+    finally:
+        response = {'ping':ms}        
+        sock.close()
+        if (ms!='ping failed'):
+            response.update(parseResponse(data))
+        return response
 
 
 class MindustryCog:
