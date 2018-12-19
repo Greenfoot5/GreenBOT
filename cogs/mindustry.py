@@ -35,7 +35,7 @@ def ping(host:str, port:int):
     sock.settimeout(4) #request timedout
     ms = 'ping failed'
     try:
-        sent = sock.sendto(b'\xFE\x01',(host, port))
+        sent = sock.sendto(b'\xFE\x01',(host, port)) #send [-2,1] (bytes)
         start = time.time()
         data, server = sock.recvfrom(128)
         ms = '%.d ms' %((time.time()-start)*1000)        
@@ -60,22 +60,30 @@ class MindustryCog:
 
     #LengthOfHostName HostName, LengthOfMapName MapName, PlayerAmount, Wave, Version
     @mindustry.command(name='ping')
-    async def Mping(self,ctx,server:str=None):
+    async def Mping(self,ctx,server:str=None, port:str='6567'):
         if server is None:
             await ctx.send("Please specify a server.")
             return
         try:
-            async with websockets.connect(f'ws://{server}:6568') as websocket:
+            if ':' in server:
+                ip, port = server.split(':')
+            response = ping(ip, int(port))
+            
+            '''async with websockets.connect(f'ws://{server}:6568') as websocket:
                 await websocket.send('ping')
                 reply = await websocket.recv()
-                dreply = base64.b64decode(reply)
-                randomColour = [int(x*255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1)]
-                randomColour = discord.Colour.from_rgb(*randomColour)
-                embed = discord.Embed(title=server,
-                                      colour=randomColour)
-                embed.set_author(name=self.bot.user.display_name,
-                                icon_url=self.bot.user.avatar_url_as(format='png'))
-                if server == "mindustry.us.to":
+                dreply = base64.b64decode(reply)'''
+            randomColour = [int(x*255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1)]
+            randomColour = discord.Colour.from_rgb(*randomColour)
+            embed = discord.Embed(title=server,
+                                  colour=randomColour)
+            embed.set_author(name=self.bot.user.display_name,
+                             icon_url=self.bot.user.avatar_url_as(format='png'))
+            for key in response:
+                embed.add_field(name=key,
+                                value=response[key])
+                             
+             '''if server == "mindustry.us.to":
                     embed.add_field(name='Host',
                                     value="Anuke")
                 elif server == "mindustry.oa.to":
@@ -95,11 +103,11 @@ class MindustryCog:
                 embed.add_field(name='Players',
                                 value=dreply[dreply[0]+5+dreply[dreply[0]+1]])
                 embed.add_field(name='Wave',
-                                value=dreply[dreply[0]+9+dreply[dreply[0]+1]])
-                embed.set_footer(text=ctx.guild.name,
-                                icon_url=ctx.guild.icon_url_as(format='png'))
-                await ctx.send(embed=embed)
-                print(dreply)
+                                value=dreply[dreply[0]+9+dreply[dreply[0]+1]])'''
+            embed.set_footer(text=ctx.guild.name,
+                             icon_url=ctx.guild.icon_url_as(format='png'))
+            await ctx.send(embed=embed)
+            print(server, response)
         except OSError:
             embed = discord.Embed(title=server,
                                   description="Invalid server.",
@@ -109,7 +117,9 @@ class MindustryCog:
             embed.set_footer(text=ctx.guild.name,
                              icon_url=ctx.guild.icon_url_as(format='png'))
             await ctx.send(embed=embed,content="Error")
-
+            '''
+        except:
+            pass
     @mindustry.command(name='servers')
     async def MServers(self,ctx):
         randomColour = [int(x*255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1)]
