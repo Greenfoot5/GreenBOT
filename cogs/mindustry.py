@@ -108,7 +108,7 @@ class MindustryCog:
                              icon_url=ctx.guild.icon_url_as(format='png'))
             await ctx.send(embed=embed)
             print(server, response)
-        except OSError:
+        '''except OSError:
             embed = discord.Embed(title=server,
                                   description="Invalid server.",
                                   colour=0x990000)
@@ -117,7 +117,7 @@ class MindustryCog:
             embed.set_footer(text=ctx.guild.name,
                              icon_url=ctx.guild.icon_url_as(format='png'))
             await ctx.send(embed=embed,content="Error")
-            '''
+        '''   
         except:
             pass
     @mindustry.command(name='servers')
