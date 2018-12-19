@@ -35,7 +35,7 @@ def ping(host:str, port:int):
     sock.settimeout(4) #request timedout
     ms = 'ping failed'
     try:
-        sent = sock.sendto(b'\xFE\x01',(host, port)) #send [-2,1] (bytes)
+        sent = sock.sendto(b'\xFE\x01',(socket.gethostbyname(host), port)) #send [-2,1] (bytes)
         start = time.time()
         data, server = sock.recvfrom(128)
         ms = '%.d ms' %((time.time()-start)*1000)        
