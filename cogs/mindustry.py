@@ -18,12 +18,13 @@ def popInt(stack):
     return stack[4:],integer
 
 def parseResponse(response):
-    response, _ = popString(response) #msg would be server
+    response, info = popString(response) #msg would be server
     response, mapName  = popString(response)
     response, players  = popInt(response)
     response, wave     = popInt(response)
     response, version  = popInt(response)
-    response =  {'mapName': mapName,
+    response =  {'info': info,
+                'mapName': mapName,
                 'players': players,
                 'wave': wave,
                 'version': version}
