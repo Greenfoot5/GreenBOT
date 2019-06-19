@@ -37,8 +37,10 @@ def ping(host:str, port:int):
     try:
         sent = sock.sendto(b'\xFE\x01',(host, port)) #send [-2,1] (bytes)
         start = time.time()
-        data, server = sock.recvfrom(128)
+        data, server = sock.recvfrom(1024) #because the owners make the infomsg too long
         ms = '%.d ms' %((time.time()-start)*1000)        
+    except Exception as e:
+        print(str(e))
     finally:
         response = {'ping':ms}        
         sock.close()
