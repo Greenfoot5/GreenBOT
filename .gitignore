@@ -1,0 +1,7 @@
+*.data
+*.list
+*.pyc
+result.py
+cogs/ss
+__pycache__/
+toRewrite/
