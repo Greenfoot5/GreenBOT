@@ -25,20 +25,9 @@ def PopString(stack):
     return stack[length:], string
 
 def PopInt(stack):
-    print("--==--")
-    print(stack[:4])
+    #we are using 4 bytes for an int
     integer = int.from_bytes(stack[:4],byteorder='big')
-    print(integer)
-    print(stack[integer:])
-    return stack[integer:], integer
-
-def PopInt2(stack):
-    print("--==--")
-    print(stack[:3])
-    integer = int.from_bytes(stack[:3],byteorder='big')
-    print(integer)
-    print(stack[integer:])
-    return stack[integer:], integer
+    return stack[4:],integer
 
 def ParseResponse(response):
     response, info = PopString(response) #msg would be server
