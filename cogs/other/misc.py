@@ -99,10 +99,10 @@ class Misc(commands.Cog):
 
         await ctx.send(content='', embed=embed)
 
-    @commands.command(name='invite')
+    @commands.command(name='sinvite')
     @commands.has_permissions(create_instant_invite=True)
     async def createAnInvite(self,ctx,limit:int=0):
-        theInvite = ctx.channel.create_invite(max_uses=limit,reason=f"Requested by: {ctx.author.name}#{ctx.author.discriminator}")
+        theInvite = await ctx.channel.create_invite(max_uses=limit,reason=f"Requested by: {ctx.author.name}#{ctx.author.discriminator}")
         await ctx.send(theInvite)
     
     
