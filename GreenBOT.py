@@ -1,9 +1,11 @@
+# Imports
 import discord
 from discord.ext import commands
 import random
 import sys, traceback
 import pickle
 
+# Sets prfix for the bot
 def get_prefix(bot, message):
     """A callable Prefix for our bot. This could be edited to allow per server prefixes."""
 
@@ -43,24 +45,28 @@ initial_extensions = ['cogs.base.help',
                       'cogs.ss.scrim',
                       'cogs.ss.BL']
 
+# Defines the bot
 bot = commands.Bot(command_prefix=get_prefix, description="A Greenfoot5 bot.", self_bot=False)
+# Removes the help command so we can add our own custom one.
 bot.remove_command('help')
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
 if __name__ == '__main__':
     for extension in initial_extensions:
         try:
+            # Appempts to load the extension
             bot.load_extension(extension)
             print(f"Successfully loaded extension - {extension}")
         except Exception as e:
+            # Outputs an error if there was an issue.
             print(f"Failed to load extension {extension}.", file=sys.stderr)
             traceback.print_exc()
 
 
 @bot.event
 async def on_ready():
-    """http://discordpy.readthedocs.io/en/rewrite/api.html#discord.on_ready"""
-
+    # Called when the bot loads.
+    # Displays the current bot and it's version.
     print(f'\n\nLogged in as: {bot.user.name} - {bot.user.id}\nVersion: 2.1.1\n')
 
     # Changes our bots Playing Status. type=1(streaming) for a standard game you could remove type and url.
@@ -70,5 +76,6 @@ async def on_ready():
 
 print("Connecting to discordapp...")
 
+# Loads our token and starts the bot.
 tooken = pickle.load(open('tooken.data','rb'))
 bot.run(tooken, bot=True, reconnect=True)
