@@ -4,20 +4,6 @@ import random
 import sys, traceback
 import pickle
 
-"""These examples make use of Python 3.6.2 and the rewrite version on the lib.
-
-For examples on cogs for the async version:
-https://gist.github.com/leovoel/46cd89ed6a8f41fd09c5
-
-Rewrite Documentation:
-http://discordpy.readthedocs.io/en/rewrite/api.html
-
-Rewrite Commands Documentation:
-http://discordpy.readthedocs.io/en/rewrite/ext/commands/api.html
-
-Familiarising yourself with the documentation will greatly help you in creating your bot and using cogs.
-"""
-
 def get_prefix(bot, message):
     """A callable Prefix for our bot. This could be edited to allow per server prefixes."""
 
@@ -56,7 +42,7 @@ initial_extensions = ['cogs.base.help',
                       'cogs.ss.gear5',
                       'cogs.ss.scrim',
                       'cogs.ss.BL']
-                    
+
 bot = commands.Bot(command_prefix=get_prefix, description="A Greenfoot5 bot.", self_bot=False)
 bot.remove_command('help')
 
@@ -79,7 +65,7 @@ async def on_ready():
 
     # Changes our bots Playing Status. type=1(streaming) for a standard game you could remove type and url.
     await bot.change_presence(activity=discord.Activity(name="GreenBOT 2.1.1",type=0))
-    
+
     print(f'Successfully logged in and booted!\n')
 
 print("Connecting to discordapp...")
