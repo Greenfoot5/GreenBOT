@@ -1,13 +1,14 @@
 from discord.ext import commands
 import pickle
 import discord
-        
+
 class OwnerCog(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-    
-    # Hidden means it won't show up on the default help.
+
+    # Allows us to load a file as a cod manually.
+    # Can use to load test cogs.
     @commands.command(name='load', hidden=True)
     @commands.is_owner()
     async def cug_load(self, ctx, *, cog: str):
@@ -21,6 +22,8 @@ class OwnerCog(commands.Cog):
         else:
             await ctx.send('**`SUCCESS`**')
 
+    # Allows us to unload a command manually.
+    # Can be used to unload a cog if there's an error of we've finished testing something.
     @commands.command(name='unload', hidden=True)
     @commands.is_owner()
     async def cug_unload(self, ctx, *, cog: str):
@@ -34,6 +37,8 @@ class OwnerCog(commands.Cog):
         else:
             await ctx.send('**`SUCCESS`**')
 
+    # Reloads a file. So, it unloads it and then loads it again.
+    # Good if we've made changes and we don't want to restart the bot.
     @commands.command(name='reload', hidden=True)
     @commands.is_owner()
     async def cug_reload(self, ctx, *, cog: str):
@@ -48,6 +53,8 @@ class OwnerCog(commands.Cog):
         else:
             await ctx.send('**`SUCCESS`**')
 
+    # Displays an example embed and a link to an embed cretor website.
+    # Good reference for when creating an embed.
     @commands.command(name='embeds')
     @commands.is_owner()
     async def example_embed(self, ctx):
@@ -69,34 +76,30 @@ class OwnerCog(commands.Cog):
 
         await ctx.send(content='**A simple Embed for discord.py@rewrite in cogs.**', embed=embed)
 
+    # Adds a spacer to the console. Good reference marker
     @commands.command('spacer')
     @commands.is_owner()
     async def Test(self,ctx):
         print("--------------------------------------------------")
 
+    # Lists the amount of users the bot can see.
     @commands.command('users')
     @commands.is_owner()
     async def Users(self,ctx):
         await ctx.send(len(self.bot.users))
 
+    # Lists the current members of the guild.
     @commands.command('members')
     @commands.is_owner()
     async def Members(self,ctx):
         await ctx.send(len(guild.members))
 
+    # Used for transferring a file from the server to the client.
     @commands.command('file')
     @commands.is_owner()
     async def SendFile(self,ctx,fileName:str):
-        print('X')
         file = discord.File(fp=f'media/temp/{fileName}')
-        print('X')
         await ctx.send(content='File sent.',file=file)
-        print('X')
-
-    @commands.command('city_houses')
-    @commands.is_owner()
-    async def City_Members(self,ctx):
-        print([m.color.to_rgb() for m in ctx.guild.members])
 
 def setup(bot):
     bot.add_cog(OwnerCog(bot))
